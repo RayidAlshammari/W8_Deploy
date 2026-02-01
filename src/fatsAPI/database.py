@@ -17,6 +17,10 @@ DATABASE_URL = os.getenv(
     "sqlite:///./fatsapi.db"  # Fallback for local testing
 )
 
+# Railway uses postgres:// but SQLAlchemy requires postgresql://
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # Create SQLAlchemy engine
 engine = create_engine(
     DATABASE_URL,
