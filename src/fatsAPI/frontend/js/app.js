@@ -78,7 +78,7 @@ async function loadUsers() {
         showLoading(true);
         const response = await fetch(`${API_BASE_URL}/users/`);
         const data = await response.json();
-        users = data.users || [];
+        users = Array.isArray(data) ? data : [];
         renderUsers(users);
     } catch (error) {
         showToast('Failed to load users', 'error');
@@ -152,9 +152,9 @@ function renderUsers(usersToRender) {
                 <span class="badge badge-${user.role}">${user.role.replace('_', ' ')}</span>
             </div>
             <div class="card-info">
-                <p><strong>📧 Email:</strong> ${user.profile.email}</p>
-                <p><strong>📱 Phone:</strong> ${user.profile.phone}</p>
-                <p><strong>📍 Address:</strong> ${user.profile.address}</p>
+                <p><strong>📧 Email:</strong> ${user.email}</p>
+                <p><strong>📱 Phone:</strong> ${user.phone || ''}</p>
+                <p><strong>📍 Address:</strong> ${user.address || ''}</p>
                 <p style="margin-top: 0.5rem; opacity: 0.7;"><strong>ID:</strong> ${user.id}</p>
             </div>
         </div>
@@ -178,7 +178,7 @@ async function loadTasks() {
         showLoading(true);
         const response = await fetch(`${API_BASE_URL}/tasks/`);
         const data = await response.json();
-        tasks = data.tasks || [];
+        tasks = Array.isArray(data) ? data : [];
         renderTasks(tasks);
     } catch (error) {
         showToast('Failed to load tasks', 'error');

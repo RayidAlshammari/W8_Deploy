@@ -50,11 +50,15 @@ async def root():
     """
     Serve the frontend application.
     """
-    from fastapi.responses import FileResponse
+    from fastapi.responses import HTMLResponse
     index_path = frontend_path / "index.html"
     if index_path.exists():
-        return FileResponse(str(index_path))
-    
+        html = index_path.read_text()
+        return HTMLResponse(
+            content=html,
+            headers={"Cache-Control": "no-cache, no-store, must-revalidate"}
+        )
+
     # Fallback if frontend not yet created
     return {
         "message": "Welcome to the Task Management API",
